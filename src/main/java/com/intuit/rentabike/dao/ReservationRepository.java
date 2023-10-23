@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
 @Component
 public class ReservationRepository {
     Map<String, Reservation> reservations;
@@ -16,6 +18,7 @@ public class ReservationRepository {
     }
 
     public Reservation save(Reservation reservation){
+        reservation.setReservationId(UUID.randomUUID().toString());
         reservations.put(reservation.getReservationId(),reservation);
         return reservation;
     }

@@ -28,13 +28,14 @@ public class SearchServiceImpl implements SearchService {
             VehicleResponse.VehicleResponseBuilder builder = VehicleResponse.builder();
             builder.make(key);
             value.forEach((model,bike)-> {
-                    builder.model(model);
-                    builder.vehicleCenterIds(bike.stream().map(Bike::getVehicleCenterId).toList());
-                    var price = bike.stream().findAny().orElseGet(null);
-                    builder.price(price!=null?price.getPrice():null);
-                    builder.vehicleType(price!=null?price.getVehicleType():VehicleType.MOTORCYCLE);
+                builder.model(model);
+                builder.vehicleCenterIds(bike.stream().map(Bike::getVehicleCenterId).toList());
+                var price = bike.stream().findAny().orElseGet(null);
+                builder.price(price!=null?price.getPrice():null);
+                builder.vehicleType(price!=null?price.getVehicleType():VehicleType.MOTORCYCLE);
+                vehicleResponse.add(builder.build());
             });
-            vehicleResponse.add(builder.build());
+
         });
         return vehicleResponse;
     }
@@ -71,8 +72,8 @@ public class SearchServiceImpl implements SearchService {
                 var price = bike.stream().findAny().orElseGet(null);
                 builder.price(price!=null?price.getPrice():null);
                 builder.vehicleType(price!=null?price.getVehicleType():VehicleType.MOTORCYCLE);
+                vehicleResponse.add(builder.build());
             });
-            vehicleResponse.add(builder.build());
         });
         return vehicleResponse;
     }

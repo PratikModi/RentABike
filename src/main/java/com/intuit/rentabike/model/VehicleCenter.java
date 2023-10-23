@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-public class VehicleCenter {
+public class VehicleCenter implements Serializable {
     private String vehicleCenterId;
     @NotNull
     private String name;
@@ -18,7 +19,7 @@ public class VehicleCenter {
     private Address address;
     @NotNull
     private int noOfSlots;
-    private List<Slot> slots;
+    //private List<Slot> slots;
     private boolean isActive;
 
     public VehicleCenter(String name, Address address, int noOfSlots) {

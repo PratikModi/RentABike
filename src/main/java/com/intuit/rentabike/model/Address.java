@@ -1,17 +1,19 @@
 package com.intuit.rentabike.model;
 
+import com.intuit.rentabike.service.SearchService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address {
+public class Address implements Serializable {
     private int addressId;
     @NotNull
     private String streetName;

@@ -2,11 +2,13 @@ package com.intuit.rentabike.dao;
 
 import com.intuit.rentabike.exception.VehicleInventoryNotFoundException;
 import com.intuit.rentabike.reservation.VehicleInventory;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -20,6 +22,12 @@ public class VehicleInventoryRepository {
     }
     public VehicleInventory save(VehicleInventory vehicleInventory){
         VehicleInventoryIndex index = new VehicleInventoryIndex(vehicleInventory.getModel(),vehicleInventory.getDate().toLocalDate());
+        if(vehicleInventoryMap.containsKey(index)){
+            var entry = vehicleInventoryMap.get(index);
+            vehicleInventory.setTotalReserved(vehicleInventory.getTotalReserved()+ entry.getTotalReserved());
+            vehicleInventory.setTotalVehicle(vehicleInventory.getTotalVehicle()+ entry.getTotalVehicle());
+            vehicleInventory.setInventoryId(entry.getInventoryId());
+        }
         vehicleInventoryMap.put(index,vehicleInventory);
         return vehicleInventory;
     }
@@ -44,7 +52,12 @@ public class VehicleInventoryRepository {
         return vehicleInventoryMap.get(index).getTotalReserved()<vehicleInventoryMap.get(index).getTotalVehicle();
     }
 
+    public List<VehicleInventory> getAllInventory(){
+        return vehicleInventoryMap.values().stream().toList();
+    }
+
     @Data
+    @Builder
     public static class VehicleInventoryIndex{
         private String model;
         private LocalDate date;

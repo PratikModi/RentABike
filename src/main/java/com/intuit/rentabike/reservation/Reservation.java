@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reservation implements Validator {
+public class Reservation implements Validator, Serializable {
     private String reservationId;
     private LocalDateTime creationDateTime;
     private ReservationStatus reservationStatus;
@@ -37,7 +38,6 @@ public class Reservation implements Validator {
     private String make;
 
     public Reservation(ReservationStatus reservationStatus, int bikeId, int customerId, LocalDateTime startDateTime, LocalDateTime endDataTime, String pickupVehicleCenterId, String returnVehicleCenterId, String model, String make) {
-        this.reservationId = UUID.randomUUID().toString();
         this.creationDateTime = LocalDateTime.now();
         this.reservationStatus = reservationStatus;
         this.bikeId = bikeId;

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -15,7 +16,7 @@ import java.util.Objects;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Bike {
+public class Bike implements Serializable {
     private int bikeId;
     @NotNull
     private String licenseNumber;

@@ -3,9 +3,11 @@ package com.intuit.rentabike.model;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @ToString
-public class Slot {
+public class Slot implements Serializable {
     private String slotId;
     private String slotName;
 

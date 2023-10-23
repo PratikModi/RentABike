@@ -4,11 +4,12 @@ import com.intuit.rentabike.enums.VehicleType;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
-public class VehicleResponse {
+public class VehicleResponse implements Serializable {
     private VehicleType vehicleType;
     private List<String> vehicleCenterIds;
     private String make;

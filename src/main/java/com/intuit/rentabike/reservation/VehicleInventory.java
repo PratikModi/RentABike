@@ -1,9 +1,13 @@
 package com.intuit.rentabike.reservation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,7 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Data
 @Builder
 @AllArgsConstructor
-public class VehicleInventory {
+public class VehicleInventory implements Serializable {
+    @ToString.Exclude
+    @JsonIgnore
     private AtomicInteger idGenerator = new AtomicInteger(1);
     private int inventoryId;
     private String make;

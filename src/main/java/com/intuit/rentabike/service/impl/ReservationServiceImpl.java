@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -47,7 +48,7 @@ public class ReservationServiceImpl implements ReservationService {
             while(!startDate.isAfter(reservation.getEndDataTime().toLocalDate())){
                 var inventoryIndex = new VehicleInventoryRepository.VehicleInventoryIndex(reservation.getModel(),reservation.getStartDateTime().toLocalDate());
                 var vehicleInventory = vehicleInventoryRepository.get(inventoryIndex);
-                vehicleInventory.setTotalReserved(vehicleInventory.getTotalReserved()-1);
+                vehicleInventory.setTotalReserved(vehicleInventory.getTotalReserved()+1);
                 vehicleInventoryRepository.update(vehicleInventory);
                 startDate = startDate.plusDays(1);
             }
@@ -72,6 +73,14 @@ public class ReservationServiceImpl implements ReservationService {
         Bike bike = bikeService.getBikeById(reservation.getBikeId());
         bike.setVehicleStatus(VehicleStatus.AVAILABLE);
         bikeService.updateBike(bike);
+        LocalDate startDate = reservation.getStartDateTime().toLocalDate();
+        while(!startDate.isAfter(reservation.getEndDataTime().toLocalDate())){
+            var inventoryIndex = new VehicleInventoryRepository.VehicleInventoryIndex(reservation.getModel(),reservation.getStartDateTime().toLocalDate());
+            var vehicleInventory = vehicleInventoryRepository.get(inventoryIndex);
+            vehicleInventory.setTotalReserved(vehicleInventory.getTotalReserved()-1);
+            vehicleInventoryRepository.update(vehicleInventory);
+            startDate = startDate.plusDays(1);
+        }
         reservationRepository.updateReservationStatus(reservationId,ReservationStatus.CANCELLED);
     }
 

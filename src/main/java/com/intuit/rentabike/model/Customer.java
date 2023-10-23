@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer{
+public class Customer implements Serializable {
     private int customerId;
     @NotNull
     private String name;
@@ -32,6 +33,10 @@ public class Customer{
         if(!isValidEmail(email)){
             throw new InvalidInputException("Invalid Email Address: "+email);
         }
+        if(!isValidPhone((phone)))
+        {
+            throw new InvalidInputException("Invalid Phone Number: "+phone);
+        }
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -41,6 +46,11 @@ public class Customer{
     private boolean isValidEmail(String email){
         String emailRegex = "^(.+)@(\\S+)$";
         return Pattern.compile(emailRegex).matcher(email).matches();
+    }
+
+    private boolean isValidPhone(String phone){
+        String phoneRegex = "\\d+";
+        return Pattern.compile(phoneRegex).matcher(phone).matches();
     }
     @Override
     public boolean equals(Object o) {
