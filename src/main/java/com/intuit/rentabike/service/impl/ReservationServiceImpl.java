@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -42,6 +43,7 @@ public class ReservationServiceImpl implements ReservationService {
         if(isBikeAvailable){
             Bike bikeAssigned = bikeService.getBikeByModel(reservation.getModel());
             reservation.setBikeId(bikeAssigned.getBikeId());
+            reservation.setCreationDateTime(LocalDateTime.now());
             bikeAssigned.setVehicleStatus(VehicleStatus.RESERVED);
             bikeService.updateBike(bikeAssigned);
             startDate = reservation.getStartDateTime().toLocalDate();
@@ -64,6 +66,14 @@ public class ReservationServiceImpl implements ReservationService {
         Bike bike = bikeService.getBikeById(reservation.getBikeId());
         bike.setVehicleStatus(VehicleStatus.AVAILABLE);
         bikeService.updateBike(bike);
+        LocalDate startDate = reservation.getStartDateTime().toLocalDate();
+        while(!startDate.isAfter(reservation.getEndDataTime().toLocalDate())){
+            var inventoryIndex = new VehicleInventoryRepository.VehicleInventoryIndex(reservation.getModel(),reservation.getStartDateTime().toLocalDate());
+            var vehicleInventory = vehicleInventoryRepository.get(inventoryIndex);
+            vehicleInventory.setTotalReserved(vehicleInventory.getTotalReserved()-1);
+            vehicleInventoryRepository.update(vehicleInventory);
+            startDate = startDate.plusDays(1);
+        }
         reservationRepository.updateReservationStatus(reservationId,ReservationStatus.COMPLETED);
     }
 

@@ -3,6 +3,7 @@ package com.intuit.rentabike.dao;
 import com.intuit.rentabike.enums.VehicleStatus;
 import com.intuit.rentabike.exception.VehicleNotFoundException;
 import com.intuit.rentabike.model.Bike;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +52,7 @@ public class BikeRepository{
     }
 
     public Bike getBikeById(int vehicleId) {
-        if(!bikes.containsKey(vehicleId) || !bikes.get(vehicleId).getVehicleStatus().equals(VehicleStatus.AVAILABLE) || !bikes.get(vehicleId).isActive()){
+        if(!bikes.containsKey(vehicleId) || StringUtils.equalsAnyIgnoreCase(bikes.get(vehicleId).getVehicleStatus().name(),VehicleStatus.OTHER.name(),VehicleStatus.BEING_SERVICED.name()) || !bikes.get(vehicleId).isActive()){
             throw new VehicleNotFoundException(vehicleId);
         }
         return bikes.get(vehicleId);
