@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 @ResponseBody
 public class InvalidInputAdvice<T> {
-    @ExceptionHandler({InvalidInputException.class})
+    @ExceptionHandler({InvalidInputException.class,ReservationNotAvailableException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String resourceNotFoundHandler(RuntimeException exception){
         return exception.getMessage();

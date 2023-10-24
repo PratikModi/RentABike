@@ -4,6 +4,8 @@ import com.intuit.rentabike.dao.ReservationRepository;
 import com.intuit.rentabike.dao.VehicleInventoryRepository;
 import com.intuit.rentabike.enums.ReservationStatus;
 import com.intuit.rentabike.enums.VehicleStatus;
+import com.intuit.rentabike.exception.ReservationNotAvailableException;
+import com.intuit.rentabike.exception.ReservationNotFoundException;
 import com.intuit.rentabike.model.Bike;
 import com.intuit.rentabike.reservation.Reservation;
 import com.intuit.rentabike.service.BikeService;
@@ -56,6 +58,8 @@ public class ReservationServiceImpl implements ReservationService {
             }
             reservation.setReservationStatus(ReservationStatus.CONFIRMED);
             reservationRepository.save(reservation);
+        }else{
+            throw new ReservationNotAvailableException(reservation);
         }
         return reservation;
     }
